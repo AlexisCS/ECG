@@ -1,61 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>Mi aplicacion con Sockets</title>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="main.js"></script>
-  <script src="chart.js/src/chart.js"></script>
+    <meta charset="utf-8">
+    <title>Mi aplicacion con Sockets</title>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
 </head>
+
 <body>
-  <h1>Mi aplicacion</h1>
-  <div id="messages"></div>
-  <canvas id="myChart" width="400" height="400"></canvas>
-  <script>
-    var ctx = document.getElementById('myChart').getContext("2d");
-    var myChart = new Chart(ctx,{
-      type: 'line',
-      data: {
-        datasets: [
-          {
-            label: "Esto será el ECG",
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40],
-            spanGaps: false,
-          }
-        ]
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom'
-          }]
-        }
-      }
-    });
-  </script>
-<!--  <br/>
+    <div class="container">
+        <h1>Electrocardiograma <small>Alexis Celestino Solís</small></h1>
+        <div id="messages"></div>
+        <div class="row">
+            <div class="col-l6">
+                <canvas id="myChart" width="100" height="30"></canvas>
+            </div>
+        </div>
+        <!--    <script>
+    </script>-->
+        <!--  <br/>
   <form onsubmit="return addMessage(this)">
     <input type="text" id="username" placeholder="Tu nombre: " >
     <input type="text" id="texto" placeholder="Habla: " >
     <input type="submit" value="Enviar">
   </form> -->
+    </div>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="chart.js/dist/Chart.min.js"></script>
+    <script src="main.js"></script>
 </body>
+
 </html>
