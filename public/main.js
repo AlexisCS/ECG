@@ -1,31 +1,48 @@
-var socket = io.connect('http://localhost:8080',{'forceNew' : true});
+var socket = io.connect('http://localhost:8080', { 'forceNew': true });
 
-socket.on('push',function(data) {
-  console.log(data);
-  //render(data);
-})
-
-/*
-function render(data) {
-  var html = `<div>
-               <strong>${data.push}</strong>:
-             </div>`;
-
-  document.getElementById('push').innerHTML = html;
-  /*var html = data.map(function(elem, index) {
-    return(`<div>
-              <strong>${elem.author}</strong>:
-              <em>${elem.text})</em>
-            </div>`);
-  }).join(" ")
+var ctx = document.getElementById("myChart");
+var data = {
+    labels: [],
+    datasets: [{
+        label: "EGC",
+        fill: false,
+        backgroundColor: "green",
+        pointColor: "rgba(0,64,0,1)",
+        borderColor: "green",
+        data: []
+    }]
+};
+var options = {
+    responsive: true,
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
 }
 
-function addMessage(e) {
-  var message = {
-    author: document.getElementById('username').value,
-    text: document.getElementById('texto').value
-  };
+var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: options
+});
 
-  socket.emit('new-message', message);
-  return false;
-}*/
+socket.emit("iniciar", true);
+
+socket.on('data', function(d) {
+    data.labels.push(d.label);
+    data.datasets[0].data.push(d.data);
+    if (data.labels.length >= 25) {
+        data.labels.splice(0, 1);
+        data.datasets[0].data.splice(0, 1);
+    }
+    myLineChart.update();
+});
+
+socket.on('disconnected', function() {
+    data.labels = []
+    data.datasets[0].data = [];
+    myLineChart.update();
+});
