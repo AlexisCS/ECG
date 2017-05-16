@@ -37,12 +37,22 @@ io.on('connection', function(socket) {
     socket.on("iniciar", () => {
         console.log("Inicio");
         var contador = 0;
-        setInterval(() => {
-            data = { label: contador, data: Math.floor(Math.random() * 5) + 1 }
-            io.sockets.emit('data', data);
-            contador += 1;
-        }, 500);
-
+        Cylon.robot({
+            connections: {
+                arduino: { adaptor: 'firmata', port: '/dev/ttyUSB0' }
+            },
+            devices: {
+                button: { driver: 'analog-sensor', pin: 2, lowerLimit: 0, upperLimit: 1023 }
+            },
+            work: function(my) {
+                every((0.5).second(), function() {
+                    var push = 0;
+                    var data = { label: contador, data: my.button.analogRead() }
+                    io.sockets.emit('data', data);
+                    contador += 0.5;
+                });
+            }
+        }).start()
     });
 
     socket.on('disconnect', () => {
