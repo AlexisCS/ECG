@@ -45,11 +45,11 @@ io.on('connection', function(socket) {
                 button: { driver: 'analog-sensor', pin: 2, lowerLimit: 0, upperLimit: 1023 }
             },
             work: function(my) {
-                every((0.5).second(), function() {
+                every((0.3).second(), function() {
                     var push = 0;
-                    var data = { label: contador, data: my.button.analogRead() }
+                    var data = { label: contador, data: ((my.button.analogRead()/1023)*5) }
                     io.sockets.emit('data', data);
-                    contador += 0.5;
+                    contador += 0.3;
                 });
             }
         }).start()

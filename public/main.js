@@ -4,7 +4,7 @@ var ctx = document.getElementById("myChart");
 var data = {
     labels: [],
     datasets: [{
-        label: "EGC",
+        label: "Electrocardiograma",
         fill: false,
         backgroundColor: "green",
         pointColor: "rgba(0,64,0,1)",
@@ -17,10 +17,13 @@ var options = {
     scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                min: 0,
+                max: 5
             }
-        }]
-    }
+        }],
+    },
+    elements: {point: {radius: 0} }
 }
 
 var myLineChart = new Chart(ctx, {
@@ -32,7 +35,7 @@ var myLineChart = new Chart(ctx, {
 socket.emit("iniciar", true);
 
 socket.on('data', function(d) {
-    data.labels.push(d.label);
+    data.labels.push(Math.round(d.label*100)/100);
     data.datasets[0].data.push(d.data);
     if (data.labels.length >= 25) {
         data.labels.splice(0, 1);
